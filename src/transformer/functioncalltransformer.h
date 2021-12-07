@@ -3,13 +3,14 @@
 
 #include "transformer.h"
 
+#include <llvm/Support/raw_ostream.h>
+
 #include <string>
 #include <set>
 
 namespace clang
 {
     class ASTContext;
-    class raw_ostream;
     class Rewriter;
 }
 
@@ -23,9 +24,9 @@ class FunctionCallTransformer : public Transformer
 
         explicit FunctionCallTransformer(clang::ASTContext &context, clang::Rewriter &rewriter);
 
-        virtual void start() override;
-        virtual void run(const clang::ast_matchers::MatchFinder::MatchResult &result);
-        virtual void print(clang::raw_ostream &stream) override;
+        void start() override;
+        void run(const clang::ast_matchers::MatchFinder::MatchResult &result) override;
+        void print(clang::raw_ostream &stream) override;
 };
 
 

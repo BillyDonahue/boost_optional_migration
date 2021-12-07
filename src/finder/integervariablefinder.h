@@ -14,8 +14,8 @@ class IntegerVariableFinder : public Finder
 
         explicit IntegerVariableFinder(clang::ASTContext &context);
 
-        virtual void start() override;
-        virtual void run(const clang::ast_matchers::MatchFinder::MatchResult &result);
+        void start() override;
+        void run(const clang::ast_matchers::MatchFinder::MatchResult &result) override;
 };
 
 

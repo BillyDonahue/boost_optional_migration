@@ -3,12 +3,12 @@
 
 #include <clang/ASTMatchers/ASTMatchFinder.h>
 
-namespace clang
-{
-    class ASTContext;
-    class raw_ostream;
-    class Rewriter;
-}
+//namespace clang
+//{
+//    class ASTContext;
+//    class raw_ostream;
+//    class Rewriter;
+//}
 
 class Finder : public clang::ast_matchers::MatchFinder::MatchCallback
 {

@@ -26,13 +26,18 @@ bool customRunToolOnCodeWithArgs(std::unique_ptr<clang::FrontendAction> frontend
 
     llvm::IntrusiveRefCntPtr<clang::FileManager> files(new clang::FileManager(clang::FileSystemOptions()));
     auto pchContainer = std::make_shared<clang::PCHContainerOperations>();
-    clang::tooling::ToolInvocation invocation(getSyntaxOnlyToolArgs(args, fileNameRef), std::move(frontendAction), files.get(), pchContainer);
 
     llvm::SmallString<1024> codeStorage;
-    invocation.mapVirtualFile(fileNameRef, code.toNullTerminatedStringRef(codeStorage));
-
+    auto mapFile = [&](auto&& f, auto&& s) {
+        //invocation.mapVirtualFile(f, s);
+        llvm::outs() << "mapVirtualFile: f:" << f << ", s:" << s;
+    };
+    mapFile(fileNameRef, code.toNullTerminatedStringRef(codeStorage));
     for (auto &filenameWithContent : virtualMappedFiles)
-        invocation.mapVirtualFile(filenameWithContent.first, filenameWithContent.second);
+        mapFile(filenameWithContent.first, filenameWithContent.second);
+
+
+    clang::tooling::ToolInvocation invocation(getSyntaxOnlyToolArgs(args, fileNameRef), std::move(frontendAction), files.get(), pchContainer);
 
     return invocation.run();
 }
