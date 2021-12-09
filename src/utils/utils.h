@@ -1,5 +1,4 @@
-#ifndef UTILS_HPP
-#define UTILS_HPP
+#pragma once
 
 #include <fstream>
 #include <vector>
@@ -12,8 +11,7 @@
 #include <clang/Frontend/FrontendActions.h>
 #include "clang/Tooling/CompilationDatabase.h"
 
-namespace utils
-{
+namespace utils {
 
 std::vector<std::string> getSyntaxOnlyToolArgs(const std::vector<std::string> &ExtraArgs, llvm::StringRef FileName);
 
@@ -27,5 +25,3 @@ std::string getSourceCode(const std::string &sourceFile);
 std::string getClangBuiltInIncludePath(const std::string &fullCallPath);
 
 } // namespace utils
-
-#endif // UTILS_HPP
