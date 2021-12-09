@@ -30,12 +30,11 @@ bool customRunToolOnCodeWithArgs(std::unique_ptr<clang::FrontendAction> frontend
     llvm::SmallString<1024> codeStorage;
     auto mapFile = [&](auto&& f, auto&& s) {
         //invocation.mapVirtualFile(f, s);
-        llvm::outs() << "mapVirtualFile: f:" << f << ", s:" << s;
+        llvm::outs() << "mapVirtualFile: f:'" << f << "', s: <<<EOF\n" << s << "EOF\n";
     };
     mapFile(fileNameRef, code.toNullTerminatedStringRef(codeStorage));
     for (auto &filenameWithContent : virtualMappedFiles)
         mapFile(filenameWithContent.first, filenameWithContent.second);
-
 
     clang::tooling::ToolInvocation invocation(getSyntaxOnlyToolArgs(args, fileNameRef), std::move(frontendAction), files.get(), pchContainer);
 

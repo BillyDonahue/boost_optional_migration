@@ -10,6 +10,10 @@ int main(int argc, const char **argv)
 {
     llvm::cl::OptionCategory ctCategory("clang-tool options");
     auto opts = clang::tooling::CommonOptionsParser::create(argc, argv, ctCategory);
+    if (!opts) {
+        llvm::errs() << "cmdline option parse failed:" << opts.takeError();
+        return -1;
+    }
 
     for (auto &src : opts->getSourcePathList()) {
         if (!utils::fileExists(src)) {
@@ -17,12 +21,18 @@ int main(int argc, const char **argv)
             return -1;
         }
 
-        auto compileArgs = utils::getCompileArgs(
-            opts->getCompilations().getCompileCommands(clang::tooling::getAbsolutePath(src)));
+        auto absPath = clang::tooling::getAbsolutePath(src);
+        llvm::outs() << "src='" << src << "', absPath='" << absPath << "'\n";
+
+        auto compileArgs = utils::getCompileArgs(opts->getCompilations().getCompileCommands(absPath));
         compileArgs.push_back("-I" + utils::getClangBuiltInIncludePath(argv[0]));
 
-        for (auto &s : compileArgs)
-            llvm::outs() << s << "\n";
+        {
+            llvm::outs() << "compileArgs: [\n";
+            for (auto &s : compileArgs)
+                llvm::outs() << "  '" << s << "',\n";
+            llvm::outs() << "]\n";
+        }
 
         utils::customRunToolOnCodeWithArgs(
             std::make_unique<XFrontendAction>(),
