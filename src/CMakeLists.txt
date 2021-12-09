@@ -8,23 +8,10 @@ cmake_minimum_required(VERSION 3.5)
 #include_directories(${LLVM_INCLUDE_DIRS})
 #include_directories(${CLANG_INCLUDE_DIRS})
 
-set(BOOST_OPTIONAL_MIGRATION_SRC
-        main.cc
-        
-        #actions/frontendaction.cc
-        #consumer/consumer.cc
-        #utils/utils.cc
-        
-        #transformer/transformer.cc
-        #transformer/functioncalltransformer.cc
-        
-        #finder/finder.cc
-        #finder/integervariablefinder.cc
-)
+#set(BOOST_OPTIONAL_MIGRATION_SRC
+#        main.cc
+#)
 
-# remove trailing whitespaces
-# string(STRIP ${LLVM_LDFLAGS} LLVM_LDFLAGS)
-
-add_executable(boost-optional-migration ${BOOST_OPTIONAL_MIGRATION_SRC})
+add_executable(boost-optional-migration main.cc)
 
 #target_link_libraries(boost-optional-migration ${CLANG_LIBS} ${LLVM_LIBS_CORE} ${LLVM_LDFLAGS})
