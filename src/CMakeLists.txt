@@ -40,10 +40,5 @@ target_link_libraries(
         ${LLVM_LDFLAGS}
 )
 
-# Allow undefined symbols in shared objects on Darwin (this is the default
-# behaviour on Linux)
-#target_link_libraries(boost-optional-migration-lib "$<$<PLATFORM_ID:Darwin>:-undefined dynamic_lookup>")
-
-
 add_executable(boost-optional-migration main.cc)
 target_link_libraries(boost-optional-migration boost-optional-migration-lib)
