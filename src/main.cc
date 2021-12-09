@@ -1,3 +1,12 @@
+#if 1
+#include <cstdio>
+
+int main(int argc, const char **argv) {
+    printf("Hello, world!\n");
+    return 0;
+}
+
+#else
 #include <llvm/Support/CommandLine.h>
 #include <clang/Tooling/CommonOptionsParser.h>
 
@@ -38,3 +47,5 @@ int main(int argc, const char **argv)
 
     return 0;
 }
+
+#endif
