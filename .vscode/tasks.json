@@ -15,11 +15,21 @@
                         "options": {
                                 "cwd": "${workspaceFolder}/build"
                         },
-                        "problemMatcher": ["$gcc"],
+                        "problemMatcher": [
+                                "$gcc"
+                        ],
                         "group": {
                                 "kind": "build",
                                 "isDefault": true
                         }
+                },
+                {
+                        "label": "run sample",
+                        "type": "shell",
+                        "command": "build/src/boost-optional-migration -p=../mongo/compile_commands.json ../mongo/src/mongo/client/mongo_uri.cpp",
+                        "problemMatcher": [
+                                "$gcc"
+                        ]
                 }
         ]
 }

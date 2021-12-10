@@ -1,28 +1,18 @@
-#ifndef TRANSFORMER_HPP
-#define TRANSFORMER_HPP
+#pragma once
 
+#include <clang/AST/ASTContext.h>
 #include <clang/ASTMatchers/ASTMatchFinder.h>
+#include <clang/Rewrite/Core/Rewriter.h>
 #include <llvm/Support/raw_ostream.h>
 
-namespace clang
-{
-    class ASTContext;
-    class Rewriter;
-}
-
-class Transformer : public clang::ast_matchers::MatchFinder::MatchCallback
-{
+class Transformer : public clang::ast_matchers::MatchFinder::MatchCallback {
     protected:
-
         clang::ASTContext &context;
         clang::Rewriter &rewriter;
 
     public:
-
         explicit Transformer(clang::ASTContext &context, clang::Rewriter &rewriter);
         
         virtual void start() = 0;
         virtual void print(clang::raw_ostream &stream) = 0;
 };
-
-#endif

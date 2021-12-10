@@ -3,25 +3,19 @@
 #include "../finder/integervariablefinder.h"
 #include "../transformer/functioncalltransformer.h"
 
-XConsumer::XConsumer(clang::ASTContext &context)
-{}
+XConsumer::XConsumer(clang::ASTContext &context) {}
 
-void XConsumer::HandleTranslationUnit(clang::ASTContext &context)
-{
+void XConsumer::HandleTranslationUnit(clang::ASTContext &context) {
     rewriter.setSourceMgr(context.getSourceManager(), context.getLangOpts());
     
-    FunctionCallTransformer fntransformer(context, rewriter);
+    FunctionCallTransformer txn(context, rewriter);
     
-    fntransformer.start();
-    fntransformer.print(llvm::outs());
+    txn.start();
+    txn.print(llvm::outs());
     
-    //IntegerVariableFinder intFinder(context);
-    //intFinder.start();
+    IntegerVariableFinder(context).start();
 
     auto buffer = rewriter.getRewriteBufferFor(context.getSourceManager().getMainFileID());
-
-    if(buffer != nullptr)
+    if (buffer)
         buffer->write(llvm::outs());
 }
-
-

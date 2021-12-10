@@ -8,23 +8,27 @@
 #include "actions/frontendaction.h"
 #include "utils/utils.h"
 
-static llvm::cl::OptionCategory category("boost-optional-migration options");
+namespace {
 
-static const char* progname;
+namespace ct = clang::tooling;
 
-static int revisedMain(clang::tooling::CommonOptionsParser& opts) {
-    clang::tooling::ClangTool tool(opts.getCompilations(), opts.getSourcePathList());
-    return tool.run(clang::tooling::newFrontendActionFactory<clang::SyntaxOnlyAction>().get());
+llvm::cl::OptionCategory category("boost-optional-migration options");
+
+const char* progname;
+
+int revisedMain(ct::CommonOptionsParser& opts) {
+    return ct::ClangTool(opts.getCompilations(), opts.getSourcePathList())
+        .run(&*ct::newFrontendActionFactory<clang::SyntaxOnlyAction>());
 }
 
-static int originalMain(clang::tooling::CommonOptionsParser& opts) {
+int originalMain(ct::CommonOptionsParser& opts) {
     for (auto &src : opts.getSourcePathList()) {
         if (!utils::fileExists(src)) {
             llvm::errs() << "File: " << src << " does not exist!\n";
             return -1;
         }
 
-        auto absPath = clang::tooling::getAbsolutePath(src);
+        auto absPath = ct::getAbsolutePath(src);
         llvm::outs() << "src='" << src << "', absPath='" << absPath << "'\n";
 
         auto compileArgs = utils::getCompileArgs(opts.getCompilations().getCompileCommands(absPath));
@@ -44,15 +48,16 @@ static int originalMain(clang::tooling::CommonOptionsParser& opts) {
             src);
     }
     return 0;
-
 }
 
+}  // namespace
+
 int main(int argc, const char **argv) {
-    auto opts = clang::tooling::CommonOptionsParser::create(argc, argv, category);
+    progname = argv[0];
+    auto opts = ct::CommonOptionsParser::create(argc, argv, category);
     if (!opts) {
         llvm::errs() << "cmdline option parse failed:" << opts.takeError();
         return -1;
     }
-    progname = argv[0];
     return revisedMain(*opts);
 }
