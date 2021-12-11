@@ -9,7 +9,7 @@
                         "command": "./build.sh"
                 },
                 {
-                        "label": "cmake --build",
+                        "label": "cmake build",
                         "type": "shell",
                         "command": "cmake --build .",
                         "options": {
